@@ -1,12 +1,30 @@
-import { Fragment, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import classNames from '../utils/classNames';
 import NavSidebar from '../components/NavSidebar';
 import TopNavbar from '../components/TopNavbar';
+import { useAuth } from '../context/authContext';
 
 export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(true);
+  const auth = useAuth();
+  console.log({ auth });
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+      auth.login();
+    }, 3000);
+  }, []);
+
+  if (!isLoading && !auth.isLogin) return 'redirect to login page';
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="w-12 h-12 rounded-full animate-spin border-y border-solid border-purple-500 border-t-transparent border-4"></div>
+      </div>
+    );
 
   return (
     <>
