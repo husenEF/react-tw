@@ -1,58 +1,61 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
+import React, { FC, ReactNode, useContext, useState } from 'react';
+import { redirect } from 'react-router-dom';
 
-export interface IAuthContextInterface {
-  isLogin: boolean;
-  token: string | null;
-  idToken: string | null;
-  expiresAt: number | null;
-  handleAuthentication: () => void;
-  login: () => void;
-  logout: () => void;
+export interface IAuth {
+  loggedIn: boolean;
+  role: string;
+  logIn: () => void;
+  logOut: () => void;
 }
 
-export interface IAuthProvider {
+export interface IProvider {
   children: ReactNode;
 }
 
-export const authContextDefaults: IAuthContextInterface = {
-  isLogin: false,
-  expiresAt: null,
-  token: null,
-  idToken: null,
-  handleAuthentication: () => null,
-  login: () => null,
-  logout: () => null,
+const defaultStae: IAuth = {
+  loggedIn: false,
+  role: '',
+  logIn: () => {},
+  logOut: () => {},
 };
 
-export const AuthContext =
-  createContext<IAuthContextInterface>(authContextDefaults);
+export const AuthContext = React.createContext<IAuth>(defaultStae);
+AuthContext.displayName = 'AuthContext';
 
-export default function AuthProvider({ children }: IAuthProvider) {
-  const [isLogin, setLogin] = useState<boolean>(false);
+export const AuthProvider: FC<IProvider> = ({ children }) => {
+  const [auth, setAuth] = useState({
+    loggedIn: false,
+    role: '',
+  });
 
-  const handleAuthentication = (): void => {};
-
-  const handleLogin = (): null => {
-    setLogin(true)
-    return null;
+  const logIn = () => {
+    setAuth((prevState) => ({
+      ...prevState,
+      loggedIn: true,
+    }));
   };
 
-  const handleLogout = (): null => {
-    return null;
+  const logOut = () => {
+    setAuth((prevState) => ({
+      ...prevState,
+      loggedIn: false,
+    }));
   };
 
-  const authValue: IAuthContextInterface = {
-    isLogin,
-    token: '',
-    idToken: null,
-    expiresAt: null,
-    handleAuthentication,
-    login: handleLogin,
-    logout: handleLogout,
-  };
   return (
-    <AuthContext.Provider value={authValue}>{children}</AuthContext.Provider>
+    <AuthContext.Provider
+      // Here as value you need to pass the same interface as IAuth
+      // You can also just pass setAuth and do whatever you want
+      // from the children
+      value={{
+        ...auth,
+        logIn,
+        logOut,
+      }}>
+      {children}
+    </AuthContext.Provider>
   );
-}
+};
 
-export const useAuth = () => useContext(AuthContext);
+const useAuth = () => useContext(AuthContext);
+export default useAuth;
