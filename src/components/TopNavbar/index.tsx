@@ -4,18 +4,19 @@ import { Bars3BottomLeftIcon, BellIcon } from '@heroicons/react/24/outline';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 
 import classNames from '../../utils/classNames';
+import useAuth from '../../context/authContext';
 
 interface ITopBar {
   setOpen: (status: boolean) => void;
 }
 
-const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
-];
-
 const TopNavbar = ({ setOpen }: ITopBar) => {
+  const auth = useAuth();
+  const userNavigation = [
+    { name: 'Your Profile', href: '#' },
+    { name: 'Settings', href: '#' },
+    { name: 'Sign out', href: '#', onClick: auth.logOut },
+  ];
   return (
     <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 bg-white shadow ">
       <button
@@ -78,11 +79,12 @@ const TopNavbar = ({ setOpen }: ITopBar) => {
                   <Menu.Item key={item.name}>
                     {({ active }) => (
                       <a
-                        href={item.href}
+                        // href={item.href}
                         className={classNames(
                           active ? 'bg-gray-100' : '',
                           'block px-4 py-2 text-sm text-gray-700',
-                        )}>
+                        )}
+                        {...item}>
                         {item.name}
                       </a>
                     )}

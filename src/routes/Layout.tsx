@@ -1,7 +1,6 @@
-import { Fragment, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import classNames from '../utils/classNames';
 import NavSidebar from '../components/NavSidebar';
 import TopNavbar from '../components/TopNavbar';
 
@@ -26,3 +25,21 @@ export default function Layout() {
     </>
   );
 }
+
+export const GlobalLayout = () => {
+  const [isLoading, setLoading] = useState<boolean>(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+  }, []);
+
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="w-12 h-12 rounded-full animate-spin border-y border-solid border-purple-500 border-t-transparent border-4"></div>
+      </div>
+    );
+
+  return <Outlet />;
+};
