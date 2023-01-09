@@ -1,4 +1,10 @@
-import { Navigate, redirect, useLocation, useNavigate } from 'react-router-dom';
+import {
+  Link,
+  Navigate,
+  redirect,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import useAuth from '../../context/authContext';
 
 const SigninPage = () => {
@@ -51,11 +57,11 @@ const SigninPage = () => {
                     Remember me
                   </label>
                 </div>
-                <a
-                  href="/forgot-password"
+                <Link
+                  to="/forgot-password"
                   className="text-blue-600 hover:text-blue-700 focus:text-blue-700 active:text-blue-800 duration-200 transition ease-in-out">
                   Forgot password?
-                </a>
+                </Link>
               </div>
 
               <button
@@ -107,9 +113,9 @@ const SigninPage = () => {
               <div className="block mt-3 text-center">
                 <p>
                   don't have an account ?{' '}
-                  <a href="/signup" className="font-bold text-blue-400">
+                  <Link to="/register" className="font-bold text-blue-400">
                     signup
-                  </a>
+                  </Link>
                 </p>
               </div>
             </form>
@@ -118,21 +124,6 @@ const SigninPage = () => {
       </div>
     </section>
   );
-
-  return (
-    <div className="container mx-auto">
-      <h1>Signin Page</h1>
-      <button
-        onClick={loginHandle}
-        className="bg-red-300 text-white px-1 rounded">
-        Signin
-      </button>
-      <button
-        onClick={() => navigage('/signup')}
-        className="bg-blue-300 ml-2 text-white px-1 rounded">
-        Sign Up
-      </button>
-    </div>
-  );
 };
+
 export default SigninPage;

@@ -29,14 +29,7 @@ const router = createBrowserRouter([
         path: '',
         element: <GlobalRoute component={Welcomepage} />,
       },
-      {
-        path: 'login',
-        element: <GlobalRoute component={SigninPage} />,
-      },
-      {
-        path: 'signup',
-        element: <GlobalRoute component={SignUppage} />,
-      },
+
       {
         path: 'dashboard',
         element: <Layout />,
@@ -48,6 +41,14 @@ const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: 'login',
+    element: <GlobalRoute component={SigninPage} />,
+  },
+  {
+    path: 'register',
+    element: <GlobalRoute component={SignUppage} />,
   },
 ]);
 
