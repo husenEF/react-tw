@@ -47,8 +47,7 @@ export const GlobalLayout = () => {
   return (
     <section className="h-screen">
       <GlobalNavbar />
-
-      <section className="container h-screen max-w-none">
+      <section className="h-screen max-w-none">
         <Outlet />
       </section>
     </section>

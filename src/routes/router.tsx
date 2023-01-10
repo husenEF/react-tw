@@ -29,16 +29,16 @@ const router = createBrowserRouter([
         path: '',
         element: <GlobalRoute component={Welcomepage} />,
       },
-
+    ],
+  },
+  {
+    path: 'dashboard',
+    element: <Layout />,
+    errorElement: <ErrorPage />,
+    children: [
       {
-        path: 'dashboard',
-        element: <Layout />,
-        children: [
-          {
-            path: '',
-            element: <PrivateRoute component={DashboardPage} />,
-          },
-        ],
+        path: '',
+        element: <PrivateRoute component={DashboardPage} />,
       },
     ],
   },

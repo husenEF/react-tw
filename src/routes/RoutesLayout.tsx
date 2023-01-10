@@ -23,6 +23,7 @@ export const PrivateRoute: FC<PropType> = ({ component: Component }) => {
 const GlobalRoute: FC<PropType> = ({ component: Component }) => {
   const auth = useAuth();
   const location = useLocation();
+  console.log({ isLogin: auth?.loggedIn });
 
   if (location?.pathname === '/login' && auth?.loggedIn)
     return <Navigate to={location?.state?.from ?? '/'} />;
