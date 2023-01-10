@@ -1,12 +1,7 @@
-import { Component, FC, lazy, Suspense } from 'react';
-import {
-  createBrowserRouter,
-  Navigate,
-  useLocation,
-  useParams,
-} from 'react-router-dom';
+import { FC, lazy, Suspense } from 'react';
+import { createBrowserRouter, Navigate, useLocation } from 'react-router-dom';
 
-import useAuth from '../context/authContext';
+import GlobalRoute, { PrivateRoute } from './RoutesLayout';
 import { GlobalLayout } from './Layout';
 
 const Loadable = (Component: FC) => (props: JSX.IntrinsicAttributes) =>
@@ -24,33 +19,6 @@ const ErrorPage = Loadable(lazy(() => import('../pages/ErrorPage')));
 const SigninPage = Loadable(lazy(() => import('../pages/Signin')));
 const SignUppage = Loadable(lazy(() => import('../pages/Signup')));
 
-interface PropType {
-  component: React.FC;
-}
-
-const PrivateRoute: FC<PropType> = ({ component: Component }) => {
-  const { loggedIn } = useAuth();
-  const locations = useLocation();
-
-  if (loggedIn) return <Component />;
-  return (
-    <Navigate
-      to="/login"
-      state={{ from: locations?.pathname ?? '/?to=home' }}
-    />
-  );
-};
-
-const GlobalRoute: FC<PropType> = ({ component: Component }) => {
-  const auth = useAuth();
-  const location = useLocation();
-
-  if (location?.pathname === '/login' && auth?.loggedIn)
-    return <Navigate to={location?.state?.from ?? '/'} />;
-
-  return <Component />;
-};
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -61,25 +29,26 @@ const router = createBrowserRouter([
         path: '',
         element: <GlobalRoute component={Welcomepage} />,
       },
+    ],
+  },
+  {
+    path: 'dashboard',
+    element: <Layout />,
+    errorElement: <ErrorPage />,
+    children: [
       {
-        path: 'login',
-        element: <GlobalRoute component={SigninPage} />,
-      },
-      {
-        path: 'signup',
-        element: <GlobalRoute component={SignUppage} />,
-      },
-      {
-        path: 'dashboard',
-        element: <Layout />,
-        children: [
-          {
-            path: '',
-            element: <PrivateRoute component={DashboardPage} />,
-          },
-        ],
+        path: '',
+        element: <PrivateRoute component={DashboardPage} />,
       },
     ],
+  },
+  {
+    path: 'login',
+    element: <GlobalRoute component={SigninPage} />,
+  },
+  {
+    path: 'register',
+    element: <GlobalRoute component={SignUppage} />,
   },
 ]);
 

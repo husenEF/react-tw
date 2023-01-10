@@ -1,4 +1,8 @@
 const SignupPage = () => {
-  return <h2>signup page</h2>;
+  return (
+    <section className="h-screen">
+      <h2>signup page</h2>
+    </section>
+  );
 };
 export default SignupPage;

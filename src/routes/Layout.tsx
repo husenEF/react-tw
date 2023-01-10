@@ -1,11 +1,14 @@
-import { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useEffect, useState, Fragment } from 'react';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 
 import NavSidebar from '../components/NavSidebar';
 import TopNavbar from '../components/TopNavbar';
+import GlobalNavbar from '../components/TopNavbar/GlobalNavbar';
+import classNames from '../utils/classNames';
 
 export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -41,5 +44,12 @@ export const GlobalLayout = () => {
       </div>
     );
 
-  return <Outlet />;
+  return (
+    <section className="h-screen">
+      <GlobalNavbar />
+      <section className="h-screen max-w-none">
+        <Outlet />
+      </section>
+    </section>
+  );
 };
